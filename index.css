@@ -1,0 +1,19 @@
+.heading {
+    text-align: center;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  body {
+    background-color: rgb(236, 165, 99);
+  }
+  
+  * {
+    font-family: sans-serif;
+  }
+  
+  .heading2 {
+    font-size: 15px;
+  }
