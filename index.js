@@ -1,38 +1,41 @@
-"use strict"
+'use strict';
 
+const apiKey = 'x3viGq0SQSiy2fml6JHMnkpZurJavU7i2lvLIMKF'; 
+const searchURL = 'https://developer.nps.gov/api/v1/parks';
 
-const searchUrl = "https://api.nps.gov/api/v1/parks";
-const apiKey = "FdXlREi490J3oa6UaqKxEpo8OoJhxk3QZ8sztfL8";
 
 function formatQueryParams(params) {
   const queryItems = Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-  return queryItems.join("&");
+  return queryItems.join('&');
 }
 
 function displayResults(responseJson) {
   console.log(responseJson);
-  $("#resultList").empty();
-  for (let i = 0; i < responseJson.data.length; i++) {
-    $("#resultList").append(`
-      <li><h3>${responseJson.data[i].fullName}</h3>
-      <a href="${responseJson.data[i].url}">${responseJson.data[i].url}</a>
+  $('#results-list').empty();
+  for (let i = 0; i < responseJson.data.length; i++){
+    $('#results-list').append(
+      `<li><h3>${responseJson.data[i].fullName}</h3>
       <p>${responseJson.data[i].description}</p>
-      <p>${responseJson.data[i].directionsInfo}</p>
-      </li>
-      `)
-  };
-  $("#results").removeClass("hidden");
-}
+      <p>Directions to the Park: ${responseJson.data[i].directionsInfo}</p>
+      <p><a href="${responseJson.data[i].url}">Visit Park URL</a></p>
+      </li>`
+    )};
 
-function getNationalParkInfo(query, limit=10) {
+  $('#results').removeClass('hidden');
+};
+
+function getParks(query, maxResults, state) {
+  console.log('getParks fired');
   const params = {
     api_key: apiKey,
     q: query,
-    limit: limit-1,
+    limit: maxResults,
+    stateCode: state
   };
   const queryString = formatQueryParams(params)
-  const url = searchUrl + "?" + queryString;
+  const url = searchURL + '?' + queryString;
+
   console.log(url);
 
   fetch(url)
@@ -44,18 +47,32 @@ function getNationalParkInfo(query, limit=10) {
     })
     .then(responseJson => displayResults(responseJson))
     .catch(err => {
-      $("#idErrorMessage").text(`Something went wrong: ${err.message}`);
+      $('#js-error-message').text(`Something went wrong: ${err.message}`);
     });
+
+    watchForm();
+}
+
+function stateArray(state) {
+  const newArray = state.split(" ");
+  console.log("newArray is ", newArray);
+
+  return newArray;
 }
 
 function watchForm() {
-  $("form").submit(event => {
+  $('form').submit(event => {
     event.preventDefault();
-    const searchTerm = $("#id-search-term").val();
-    const limit = $("#id-max-results").val();
-    getNationalParkInfo(searchTerm, limit);
+    const searchTerm = $('#js-search-term').val();
+    const maxResults = $('#js-max-results').val();
+    const state = $('#js-search-states').val();
+    if (state.length > 2) {
+      const multiState = stateArray(state);
+      getParks(searchTerm, maxResults, multiState);
+    } else {
+      getParks(searchTerm, maxResults, state);
+    }
   });
 }
 
 $(watchForm);
-

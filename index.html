@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>State Park Service</title>
-    <link href="index.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>National Park API Assignment</title>
+    <link rel="stylesheet" href="index.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <main>
+</head>
+<body>
+    <div class="container">
+        <h1>Search for the nearest park to your state!</h1>
 
-      <div class="container">
-        <h1 class="heading">Search for parks in your state!</h1>
-
-        <form class="formClass">
-          <label for="searchTerm" class="heading2">Search State</label>
-          <input type="text" class="searchTerm" id="id-search-term"required>
-
-          <label for="maxResults" class="heading2">Number of Results</label>
-          <input type="number" name="maxResults" value="10" id="id-max-results">
-          
-          <input type="submit" value="Go!">
+        <form id="js-form">
+          <div class="forms">
+            <label for="search-term">Search term</label>
+            <input type="text" name="search-term" id="js-search-term" required>
+          </div>
+        
+          <div class="forms">
+            <label for="max-results">Maximum results to return</label>
+            <input type="number" name="max-results" id="js-max-results" value="10">
+          </div>
+          <div class="forms">
+            <label for="search-states">States to Search</label>
+            <input type="Text" name="search-states" id="js-search-states">
+          </div>
+            <input type="submit" value="Go!">
         </form>
 
-        <p id="idErrorMessage" class="errorMessage"></p>
+        <p id="js-error-message" class="error-message"></p>
         <section id="results" class="hidden">
-          <h2>Search Results</h2>
-          <ul id="resultList"></ul>
+          <h2>Search results</h2>
+          <ul id="results-list">
+          </ul>
         </section>
-      </div>
-
-    </main>
+    </div>
     <script src="index.js"></script>
-  </body>
+</body>
 </html>
